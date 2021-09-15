@@ -1,0 +1,22 @@
+{
+  "name": "envset",
+  "version": "1.0.0",
+  "description": "Set the environment variables of your ExpressJS app while the app runs without restarting your server",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "env",
+    "process"
+  ],
+  "author": "Chukwuemeka Ajah",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "jest": "^27.2.0",
+    "supertest": "^6.1.6"
+  }
+}
