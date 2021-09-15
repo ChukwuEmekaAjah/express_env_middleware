@@ -1,6 +1,23 @@
 function envset(config){
-    const setup = {
-        url: "/envset"
+    let setup = {
+        url: "/envset",
+        method: "post"
+    }
+
+    let authKey = null;
+    if(typeof config === 'string' && config.trim()){// developer only wants to set the auth key string
+        setup.authKey = config;
+    }
+
+    if(typeof config === 'object'){ // developer wants to add other configurations
+        if(config.authKey && typeof config.authKey === "string" && config.authKey.trim()){
+            setup.authKey = config.authKey
+        }
+        setup = Object.assign(setup, config)
+    }
+
+    if(!setup.authKey){
+        throw new Error("Invalid environment variables update config")
     }
     
     return function(req, res, next){
@@ -9,27 +26,11 @@ function envset(config){
             return next();
         }
 
-        if(req.method.toLowerCase() !== "post"){
+        if(req.method.toLowerCase() !== setup.method){
             return res.status(404).send('Not found')
         }
 
-        let authKey = null;
-        if(typeof config === 'string' && config.trim()){// developer only wants to set the auth key string
-            authKey = config;
-        } 
-
-        if(typeof config === 'object'){ // developer wants to add other configurations
-            if(!config.authKey || typeof config.authKey !== "string" || !config.authKey.trim()){
-                return res.status(403).send("Unauthorized");
-            }
-            authKey = config.authKey;
-        }
-
-        if(!authKey){
-            return res.status(403).send("Unauthorized");
-        }
-
-        if(req.headers['env_authkey'] !== authKey){
+        if(req.headers['env_authkey'] !== setup.authKey){
             return res.status(403).send("Unauthorized");
         }
 

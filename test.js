@@ -20,27 +20,25 @@ describe('Middleware setup usage', function() {
     });
 
     test("Should not set environment variable with object config without authKey field", (done) => {
-        app.use(envMiddleware({
-            athKey: ""
-        }))
-        request(app)
-            .post('/envset')
-            .expect(403)
-            .then(function(response){
-                expect(response.text).toEqual('Unauthorized');
-                done();
-            });
+
+        try{
+            app.use(envMiddleware({
+                athKey: ""
+            }))
+        } catch(exc){
+            expect(exc.message).toEqual("Invalid environment variables update config")
+            done()
+        }
+    
     });
 
     test("Should not set environment variable without auth value", (done) => {
-        app.use(envMiddleware())
-        request(app)
-            .post('/envset')
-            .expect(403)
-            .then(function(response){
-                expect(response.text).toEqual('Unauthorized');
-                done();
-            });
+        try{
+            app.use(envMiddleware())
+        } catch(exc){
+            expect(exc.message).toEqual("Invalid environment variables update config")
+            done()
+        }
     });
 
     test('Should not set environment variable when auth key is incorrect', function(done) {
