@@ -1,6 +1,13 @@
 function envset(config){
-
+    const setup = {
+        url: "/envset"
+    }
+    
     return function(req, res, next){
+        
+        if(req.url !== setup.url){
+            return next();
+        }
 
         if(req.method.toLowerCase() !== "post"){
             return res.status(404).send('Not found')

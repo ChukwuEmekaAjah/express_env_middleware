@@ -11,7 +11,7 @@ describe('Middleware setup usage', function() {
 
     test("Should not set environment variable with unsupported method", (done) => {
         request(app)
-            .get('/')
+            .get('/envset')
             .expect(404)
             .then(function(response){
                 expect(response.text).toEqual('Not found');
@@ -24,7 +24,7 @@ describe('Middleware setup usage', function() {
             athKey: ""
         }))
         request(app)
-            .post('/')
+            .post('/envset')
             .expect(403)
             .then(function(response){
                 expect(response.text).toEqual('Unauthorized');
@@ -35,7 +35,7 @@ describe('Middleware setup usage', function() {
     test("Should not set environment variable without auth value", (done) => {
         app.use(envMiddleware())
         request(app)
-            .post('/')
+            .post('/envset')
             .expect(403)
             .then(function(response){
                 expect(response.text).toEqual('Unauthorized');
@@ -47,7 +47,7 @@ describe('Middleware setup usage', function() {
         const authKey = "Chuksy"
         app.use(envMiddleware(authKey))
         request(app)
-            .post('/')
+            .post('/envset')
             .send({name: 'john'})
             .set('env_authkey', authKey+'random')
             .expect(403)
@@ -61,7 +61,7 @@ describe('Middleware setup usage', function() {
         const authKey = "Chuksy"
         app.use(envMiddleware(authKey))
         request(app)
-            .post('/')
+            .post('/envset')
             .set('env_authkey', authKey)
             .expect(400)
             .then(function(response){
@@ -79,7 +79,7 @@ describe('Middleware setup usage', function() {
 
         app.use(envMiddleware(authKey))
         request(app)
-            .post('/')
+            .post('/envset')
             .set('env_authkey', authKey)
             .send({env:envVariables})
             .expect(200)

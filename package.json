@@ -1,5 +1,5 @@
 {
-  "name": "envset",
+  "name": "express-envset",
   "version": "1.0.0",
   "description": "Set the environment variables of your ExpressJS app while the app runs without restarting your server",
   "main": "index.js",
